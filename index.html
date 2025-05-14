@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>007MARKET - Digital Underground</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00ff9d;
+            --primary-glow: rgba(0, 255, 157, 0.3);
+            --dark-bg: #0a0a0a;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --font-mono: 'Courier Prime', monospace;
+            --font-main: 'Poppins', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-main);
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* Scene 1 - Hack Message */
+        .hack-scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 1;
+        }
+        
+        .hack-message {
+            font-family: var(--font-mono);
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            text-align: center;
+            padding: 2rem;
+            text-shadow: 0 0 10px var(--primary-glow);
+            opacity: 0;
+            transform: scale(0.8);
+            position: relative;
+        }
+        
+        .hack-message::before, 
+        .hack-message::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-color);
+            z-index: -1;
+            opacity: 0;
+        }
+        
+        .glitch-effect {
+            animation: glitch 0.3s infinite;
+            position: relative;
+            display: inline-block;
+        }
+        
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+                text-shadow: 0 0 10px var(--primary-glow);
+            }
+            20% {
+                transform: translate(-2px, 2px);
+                text-shadow: 2px 2px 10px rgba(255, 0, 0, 0.5);
+            }
+            40% {
+                transform: translate(-2px, -2px);
+                text-shadow: 2px -2px 10px rgba(0, 0, 255, 0.5);
+            }
+            60% {
+                transform: translate(2px, 2px);
+                text-shadow: -2px 2px 10px rgba(0, 255, 0, 0.5);
+            }
+            80% {
+                transform: translate(2px, -2px);
+                text-shadow: -2px -2px 10px rgba(255, 255, 0, 0.5);
+            }
+            100% {
+                transform: translate(0);
+                text-shadow: 0 0 10px var(--primary-glow);
+            }
+        }
+        
+        /* Scene 2 - Terminal */
+        .terminal-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .terminal-screen {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 2rem;
+            background-color: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 20px var(--primary-glow), inset 0 0 10px rgba(0, 255, 157, 0.1);
+            overflow: hidden;
+            z-index: 2;
+            transform: perspective(800px) rotateX(5deg);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+        
+        .terminal-screen:hover {
+            transform: perspective(800px) rotateX(0deg);
+            box-shadow: 0 0 30px var(--primary-glow), inset 0 0 15px rgba(0, 255, 157, 0.2);
+        }
+        
+        .terminal-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.5rem;
+            background-color: rgba(0, 0, 0, 0.9);
+            border-bottom: 1px solid var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+        }
+        
+        .terminal-title {
+            color: var(--primary-color);
+        }
+        
+        .terminal-controls span {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 5px;
+        }
+        
+        .terminal-controls span:nth-child(1) {
+            background-color: #ff5f56;
+        }
+        
+        .terminal-controls span:nth-child(2) {
+            background-color: #ffbd2e;
+        }
+        
+        .terminal-controls span:nth-child(3) {
+            background-color: #27c93f;
+        }
+        
+        .logo-container {
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .logo-text {
+            font-family: var(--font-mono);
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 15px var(--primary-glow);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .logo-text span:first-child {
+            color: var(--primary-color);
+        }
+        
+        .logo-text span:last-child {
+            color: #fff;
+        }
+        
+        .logo-text i {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                text-shadow: 0 0 10px var(--primary-glow);
+            }
+            50% {
+                text-shadow: 0 0 20px var(--primary-glow), 0 0 30px var(--primary-glow);
+            }
+            100% {
+                text-shadow: 0 0 10px var(--primary-glow);
+            }
+        }
+        
+        .terminal-content {
+            margin-top: 2rem;
+            font-family: var(--font-mono);
+            text-align: left;
+        }
+        
+        .command-line {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .command-line::before {
+            content: '$ ';
+            color: var(--primary-color);
+        }
+        
+        .command-output {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .blinking-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: var(--primary-color);
+            animation: blink 1s infinite;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .cta-button {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-decoration: none;
+            margin-top: 2rem;
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+        
+        .cta-button:hover {
+            color: var(--dark-bg);
+            box-shadow: 0 0 20px var(--primary-glow);
+            transform: translateY(15px) scale(1.05);
+        }
+        
+        .cta-button:hover::before {
+            left: 0;
+        }
+        
+        .matrix-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .matrix-column {
+            position: absolute;
+            top: -100px;
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            opacity: 0.3;
+            text-shadow: 0 0 5px var(--primary-glow);
+            animation-name: matrix-fall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+        
+        @keyframes matrix-fall {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+        
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: rgba(0, 255, 157, 0.3);
+            box-shadow: 0 0 10px var(--primary-glow);
+            z-index: 3;
+            animation: scan 4s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% {
+                top: 0;
+            }
+            100% {
+                top: 100%;
+            }
+        }
+        
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/png;base64,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');
+            opacity: 0.03;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .terminal-screen {
+                padding: 1.5rem;
+            }
+            
+            .logo-text {
+                font-size: 2.5rem;
+            }
+            
+            .terminal-content {
+                font-size: 0.9rem;
+            }
+            
+            .hack-message {
+                font-size: 1.5rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+    
+    <!-- Scene 1: Hack Message -->
+    <div class="hack-scene" id="hackScene">
+        <div class="hack-message" id="hackMessage">
+            <span class="glitch-effect">Your website has been hacked by 007MARKET Team</span>
+        </div>
+    </div>
+    
+    <!-- Scene 2: Terminal -->
+    <div class="matrix-bg" id="matrix-bg"></div>
+    <div class="scan-line" id="scanLine"></div>
+    
+    <div class="terminal-container" id="terminalContainer">
+        <div class="terminal-screen">
+            <div class="terminal-header">
+                <div class="terminal-controls">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="terminal-title">007market.sh</div>
+                <div></div>
+            </div>
+            
+            <div class="logo-container">
+                <div class="logo-text">
+                    <i class="fas fa-skull-crossbones"></i> <span>007</span><span>MARKET</span>
+                </div>
+            </div>
+            
+            <div class="terminal-content">
+                <div class="command-line" id="cmd1">access --secure-channel</div>
+                <div class="command-output" id="out1">Establishing secure connection...</div>
+                
+                <div class="command-line" id="cmd2">verify --identity</div>
+                <div class="command-output" id="out2">Identity verified. Welcome to the underground market.</div>
+                
+                <div class="command-line" id="cmd3">status --server</div>
+                <div class="command-output" id="out3">All systems operational. Encryption active. Ready for secure transactions.</div>
+                
+                <div class="command-line" id="cmd4">connect --marketplace</div>
+                <div class="command-output" id="out4">Connection established. Redirecting to secure marketplace<span class="blinking-cursor"></span></div>
+            </div>
+            
+            <a href="https://007market.shop" class="cta-button" id="enterButton">
+                <i class="fas fa-terminal me-2"></i> ENTER
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Scene 1 animation
+            const hackScene = document.getElementById('hackScene');
+            const hackMessage = document.getElementById('hackMessage');
+            const terminalContainer = document.getElementById('terminalContainer');
+            const matrixBg = document.getElementById('matrix-bg');
+            
+            // Animate hack message appearance with glitch effect
+            setTimeout(function() {
+                hackMessage.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                hackMessage.style.opacity = '1';
+                hackMessage.style.transform = 'scale(1)';
+                
+                // Add glitch animation
+                setTimeout(function() {
+                    hackMessage.classList.add('glitch');
+                    
+                    // Simulate screen glitches
+                    for (let i = 0; i < 5; i++) {
+                        setTimeout(function() {
+                            hackScene.style.opacity = Math.random() < 0.5 ? '0.8' : '1';
+                        }, 1000 + i * 200);
+                    }
+                }, 1000);
+            }, 500);
+            
+            // Transition to Scene 2
+            setTimeout(function() {
+                // Glitch effect before transition
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(function() {
+                        hackScene.style.opacity = Math.random() < 0.5 ? '0.5' : '1';
+                        hackScene.style.transform = `translateX(${Math.random() * 10 - 5}px) translateY(${Math.random() * 10 - 5}px)`;
+                    }, i * 100);
+                }
+                
+                // Final transition
+                setTimeout(function() {
+                    hackScene.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                    hackScene.style.opacity = '0';
+                    hackScene.style.transform = 'scale(1.2)';
+                    
+                    // Show matrix background
+                    matrixBg.style.opacity = '1';
+                    
+                    // Show terminal
+                    setTimeout(function() {
+                        terminalContainer.style.opacity = '1';
+                        terminalContainer.style.transform = 'translateY(0)';
+                        
+                        // Hide hack scene completely
+                        hackScene.style.display = 'none';
+                        
+                        // Animate terminal content
+                        animateTerminal();
+                    }, 800);
+                }, 1500);
+            }, 3000);
+            
+            // Function to animate terminal content
+            function animateTerminal() {
+                const elements = [
+                    document.getElementById('cmd1'),
+                    document.getElementById('out1'),
+                    document.getElementById('cmd2'),
+                    document.getElementById('out2'),
+                    document.getElementById('cmd3'),
+                    document.getElementById('out3'),
+                    document.getElementById('cmd4'),
+                    document.getElementById('out4'),
+                    document.getElementById('enterButton')
+                ];
+                
+                // Animate each element with a delay
+                elements.forEach((el, index) => {
+                    setTimeout(() => {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)';
+                    }, index * 400);
+                });
+            }
+            
+            // Matrix background effect
+            const characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            const columnCount = Math.floor(window.innerWidth / 20);
+            
+            for (let i = 0; i < columnCount; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                
+                // Random position
+                column.style.left = `${(i / columnCount) * 100}%`;
+                
+                // Random speed
+                const speed = Math.random() * 10 + 5;
+                column.style.animationDuration = `${speed}s`;
+                
+                // Random delay
+                const delay = Math.random() * 10;
+                column.style.animationDelay = `${delay}s`;
+                
+                // Create random characters
+                const columnHeight = Math.floor(Math.random() * 15) + 5;
+                for (let j = 0; j < columnHeight; j++) {
+                    const char = document.createElement('div');
+                    char.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
+                    char.style.opacity = j === 0 ? '1' : (1 - j / columnHeight).toFixed(2);
+                    column.appendChild(char);
+                }
+                
+                matrixBg.appendChild(column);
+            }
+            
+            // Add random glitch effects to the terminal
+            setInterval(function() {
+                if (Math.random() < 0.1) {
+                    const terminalScreen = document.querySelector('.terminal-screen');
+                    terminalScreen.style.transform = `perspective(800px) rotateX(${5 + Math.random() * 2}deg) translateX(${Math.random() * 4 - 2}px)`;
+                    
+                    setTimeout(function() {
+                        terminalScreen.style.transform = 'perspective(800px) rotateX(5deg)';
+                    }, 100);
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
